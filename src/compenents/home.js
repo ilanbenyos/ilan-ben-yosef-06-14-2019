@@ -1,8 +1,13 @@
 import React from 'react'
+import { connect } from "react-redux";
+
 import List from './list'
 import Form from "./form";
+const mapStateToProps = state => {
+    return { userName: state.userName };
+};
 
-class Home extends React.Component {
+class ConnectedHome extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,7 +20,7 @@ class Home extends React.Component {
         return(
             <div className="row mt-5">
                 <div className="col-md-4 offset-md-1">
-                    <h2>Articles</h2>
+                    <h2>Home - {this.props.userName}</h2>
                     <List />
                 </div>
                 <div className="col-md-4 offset-md-1">
@@ -27,4 +32,6 @@ class Home extends React.Component {
 
     }
 }
+const Home = connect(mapStateToProps)(ConnectedHome);
+
 export default Home

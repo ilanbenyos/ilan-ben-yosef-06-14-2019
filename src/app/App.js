@@ -17,10 +17,6 @@ class App extends Component {
             user:null,
         };
     }
-
-    handleChildClick2 = () => {
-        console.log('eeeeeeeeeeeeeeeeeeeeeee');
-    };
     handleChildClick = () => {
         this.setState(state => ({ childText: state.childText === 'init'? 'no!!!':'init' }));
     };
@@ -53,7 +49,6 @@ class App extends Component {
                                 <Contact {...routeProps}
                                          foo="bar"
                                          onClick={this.handleChildClick}
-                                         onClick2={this.handleChildClick2}
                                          text={this.state.childText}/>
                             )}
                         />

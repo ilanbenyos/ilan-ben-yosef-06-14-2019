@@ -1,19 +1,22 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
-import { addArticle } from "../actions/index";
+import { addArticle, setUserName } from "../store/actions";
 function mapDispatchToProps(dispatch) {
     return {
-        addArticle: article => dispatch(addArticle(article))
+        setUserName: userName => dispatch(setUserName(userName)),
+        addArticle: article => dispatch(addArticle(article)),
     };
 }
 class ConnectedForm extends Component {
     constructor() {
         super();
         this.state = {
-            title: ""
+            title: "",
+            userName:'',
         };
         this.handleChange = this.handleChange.bind(this);
+        this.submitUserName = this.submitUserName.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleChange(event) {
@@ -21,15 +24,26 @@ class ConnectedForm extends Component {
     }
     handleSubmit(event) {
         event.preventDefault();
-        const { title } = this.state;
+        const { title,userName } = this.state;
         const id = uuidv1();
         this.props.addArticle({ title, id });
-        this.setState({ title: "" });
+        this.setState({
+            title: "",
+        });
+    }
+    submitUserName(event) {
+        event.preventDefault();
+        const { userName } = this.state;
+        this.props.setUserName(userName);
+        this.setState({
+            userName:'',
+        });
     }
     render() {
-        const { title } = this.state;
+        const { title, userName } = this.state;
         return (
-            <form onSubmit={this.handleSubmit}>
+            <div className="forms">
+                <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="title">Title</label>
                     <input
@@ -44,6 +58,22 @@ class ConnectedForm extends Component {
                     SAVE
                 </button>
             </form>
+                <form onSubmit={this.submitUserName}>
+                    <div className="form-group">
+                        <label htmlFor="userName">Name</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="userName"
+                            value={userName}
+                            onChange={this.handleChange}
+                        />
+                    </div>
+                    <button type="submit" className="btn btn-success btn-lg">
+                        SAVE
+                    </button>
+                </form>
+            </div>
         );
     }
 }
