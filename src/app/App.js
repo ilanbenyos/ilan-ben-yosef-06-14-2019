@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Game from '../compenents/views/game';
+import Game from '../compenents/views/game/game';
 import Home from '../compenents/views/home';
 import About from '../compenents/views/about';
 import Contact from '../compenents/views/contact';
