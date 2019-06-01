@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Home from '../compenents/home';
-import About from '../compenents/about';
-import Contact from '../compenents/contact';
+import Game from '../compenents/views/game';
+import Home from '../compenents/views/home';
+import About from '../compenents/views/about';
+import Contact from '../compenents/views/contact';
+import './App.scss';
 
 class App extends Component {
     constructor(props) {
@@ -23,25 +25,25 @@ class App extends Component {
     render() {
         return (
             <Router>
-                <div>
-                    <h2>Welcome to React Router Tutorial</h2>
-                    <h3>{this.state.childText2}=={this.state.txt2}</h3>
-                    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                        <ul className="navbar-nav mr-auto">
-                            <li><Link to={'/'}className="nav-link"> Home </Link></li>
-
-                            <li><Link to={
-                                { pathname: `/contact/${ this.state.pop}`,
-                                    search: '?foo=' + this.state.txt2
-                                }
-                            }className="nav-link">Contact</Link></li>
-                            <li><Link to={'/about'} className="nav-link">About</Link></li>
-                        </ul>
-                    </nav>
+                <div className="container">
+                    <div className="navbar-nav mr-auto d-flex flex-row">
+                        <Link to={'/'}className="nav-link mr-2"> Home </Link>
+                        <Link to={
+                            { pathname: `/contact/${ this.state.pop}`,
+                                search: '?foo=' + this.state.txt2
+                            }
+                        }className="nav-link mr-2">Contact</Link>
+                        <Link to={'/game'} className="nav-link mr-2">Game</Link>
+                        <Link to={'/about'} className="nav-link">About</Link>
+                    </div>
+                    <h2>התרגיל של הגר</h2>
                     <hr />
                     <Switch>
                         <Route exact path='/' render={(routeProps) => (
                             <Home {...routeProps} foo="bar"/>
+                        )}/>
+                        <Route exact path='/game' render={(routeProps) => (
+                            <Game {...routeProps}/>
                         )}/>
                         <Route
                             path="/contact/:txt2"

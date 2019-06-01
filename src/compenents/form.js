@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
 import { addArticle, setUserName } from "../store/actions";
+
 function mapDispatchToProps(dispatch) {
     return {
         setUserName: userName => dispatch(setUserName(userName)),
@@ -15,14 +16,11 @@ class ConnectedForm extends Component {
             title: "",
             userName:'',
         };
-        this.handleChange = this.handleChange.bind(this);
-        this.submitUserName = this.submitUserName.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleChange(event) {
+    handleChange=(event)=> {
         this.setState({ [event.target.id]: event.target.value });
     }
-    handleSubmit(event) {
+    handleSubmit=(event)=> {
         event.preventDefault();
         const { title,userName } = this.state;
         const id = uuidv1();
@@ -31,7 +29,7 @@ class ConnectedForm extends Component {
             title: "",
         });
     }
-    submitUserName(event) {
+    submitUserName=(event)=> {
         event.preventDefault();
         const { userName } = this.state;
         this.props.setUserName(userName);

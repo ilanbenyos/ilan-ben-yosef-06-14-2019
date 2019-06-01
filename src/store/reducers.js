@@ -1,6 +1,7 @@
 const initialState = {
     articles: [],
     userName:'',
+    board:null,
 };
 function rootReducer(state = initialState, action) {
     if (action.type === 'ADD_ARTICLE') {
@@ -11,6 +12,9 @@ function rootReducer(state = initialState, action) {
     if (action.type === 'setUserName') {
         return {...state, userName:action.payload}
     }
+  if (action.type === 'setBoard') {
+    return {...state, board:action.newBoard}
+  }
     return state;
 }
 export default rootReducer;

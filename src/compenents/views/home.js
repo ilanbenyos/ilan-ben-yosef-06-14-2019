@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from "react-redux";
 
-import List from './list'
-import Form from "./form";
+import List from '../list'
+import Form from "../form";
 const mapStateToProps = state => {
     return { userName: state.userName };
 };

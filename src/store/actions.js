@@ -2,6 +2,9 @@
 export function addArticle(payload) {
     return { type: 'ADD_ARTICLE', payload };
 }
+export function setBoard({newBoard}) {
+    return { type: 'setBoard', newBoard };
+}
 export function setUserName(payload) {
     return { type: 'setUserName', payload };
 }
