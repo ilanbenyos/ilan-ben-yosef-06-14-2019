@@ -29,7 +29,7 @@ class board extends React.Component {
               {y.map((x, xIdx) =>
                 <div key={xIdx}
                      className={
-                       `square ${board[xIdx][yIdx].isSelected ?
+                       `square rol-btn ${board[xIdx][yIdx].isSelected ?
                          `selected selected-${board[xIdx][yIdx].isSelected}`:''}
                          ${board[xIdx][yIdx].isLonely ? 'lonely':''}
                          ${board[xIdx][yIdx].answerStatus}`

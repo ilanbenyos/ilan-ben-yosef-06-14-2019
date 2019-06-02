@@ -1,5 +1,4 @@
 import React from 'react'
-import board from "./board";
 
 class gameForm extends React.Component {
     constructor(props) {
@@ -44,8 +43,8 @@ class gameForm extends React.Component {
         :
         <div>no data</div>
       }
-          <form onSubmit={this.handleAnswer}>
-            <div className="form-group">
+          <form onSubmit={this.handleAnswer} className="d-flex flex-column justify-content-center">
+            <div className="form-group d-flex justify-content-center">
               <label>
               <input
                 type="text"
@@ -54,10 +53,11 @@ class gameForm extends React.Component {
                 onChange={this.handleChange}
               />
               </label>
+              <button type="submit" className="btn btn-success">
+                שלח!
+              </button>
             </div>
-            <button type="submit" className="btn btn-success btn-lg">
-              שלח!
-            </button>
+
           </form>
 
         </div>

@@ -38,9 +38,10 @@ class connectedGame extends React.Component {
   handleAnswer=(userInput)=>{
     let newBoard = _.cloneDeep(this.props.board);
 
-    let correctRes = this.state.currSelectedGroups.reduce((acc,curr)=>{
+    let chosenSquares = this.state.currSelectedGroups.reduce((acc,curr)=>{
       return acc+curr.length
-    },this.state.totalRight);
+    },0);
+    let correctRes = chosenSquares + this.state.totalRight;
     let obj={
       isSelected:false,
       answerStatus:'status-wrong'
@@ -52,11 +53,11 @@ class connectedGame extends React.Component {
       });
     }else{
       this.setState({
-        totalWrong: this.state.totalWrong + correctRes,
+        totalWrong: this.state.totalWrong + chosenSquares,
       });
     }
-    this.state.currSelectedGroups.forEach((row,idx)=>{
-      row.forEach((sq,indx)=> {
+    this.state.currSelectedGroups.forEach((row)=>{
+      row.forEach((sq)=> {
         newBoard[sq.x][sq.y] = {...sq,...obj}
       })
     });
@@ -65,13 +66,23 @@ class connectedGame extends React.Component {
       currSelectedGroups: [],
     });
 
-
-
   };
   componentDidUpdate(){
-    if(this.state.totalWrong + this.state.totalRight === this.state.xLen * this.state.yLen){
+    let totalSquares = this.state.xLen * this.state.yLen
+    if(this.state.totalRight === totalSquares){
       this.nextStage()
+    }else if(this.state.totalWrong + this.state.totalRight === totalSquares){
+      this.refreshStage()
     }
+  }
+  refreshStage(){
+    this.setState({
+      markedGroups:[],
+      currSelectedGroups:[],
+      currSelectedGroup:[],
+      totalWrong:0,
+      totalRight:0,
+    },()=>this.initBoard());
   }
   nextStage(){
     this.setState({
@@ -121,7 +132,9 @@ class connectedGame extends React.Component {
         if (arr.some(sq => sq.srcIdx === sqr.srcIdx)) {
           newBoard[x][y].isLonely = false;
         }else{
-          newBoard[x][y].isLonely = true;
+          let rand = this.getRandomArbitrary(0,arr.length-1)
+          let srcIdx = arr[rand].srcIdx
+          newBoard[x][y].srcIdx = srcIdx;
         }
       })
     });
@@ -147,11 +160,13 @@ class connectedGame extends React.Component {
     let newBoard = _.cloneDeep(this.props.board);
 
     this.markNeighbours(x,y,newBoard)
-    this.props.setBoard({newBoard});
-    this.setState({
-      currSelectedGroups: [...this.state.currSelectedGroups,this.currSelectedGroup ],
-    });
-    this.currSelectedGroup = [];
+    if(this.currSelectedGroup.length> 0) {
+      this.props.setBoard({newBoard});
+      this.setState({
+        currSelectedGroups: [...this.state.currSelectedGroups, this.currSelectedGroup],
+      });
+      this.currSelectedGroup = [];
+    }
   }
   getNeighbours(x,y, board = this.props.board){
     let neighbours = []
