@@ -1,22 +1,6 @@
-.game{
-  .square{
-    width:50px;
-    height:50px;
-    border:1px solid green;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    img{
-      width:100%;
-      height:100%;
-      //opacity:.4;
-    }
-  }
-  .lonely{
-    //background-color: #61dafb;
-  }
-  .selected{
-    background-color: #61dafb;
-  }
 
+
+.game{
+  @import "./gameForm";
+  @import "./board";
 }

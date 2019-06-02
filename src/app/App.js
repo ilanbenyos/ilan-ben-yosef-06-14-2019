@@ -26,7 +26,9 @@ class App extends Component {
         return (
             <Router>
                 <div className="container">
-                    <div className="navbar-nav mr-auto d-flex flex-row">
+                  <h2>התרגיל של הגר</h2>
+
+                  <div className="navbar-nav mr-auto d-flex flex-row">
                         <Link to={'/'}className="nav-link mr-2"> Home </Link>
                         <Link to={
                             { pathname: `/contact/${ this.state.pop}`,
@@ -36,7 +38,6 @@ class App extends Component {
                         <Link to={'/game'} className="nav-link mr-2">Game</Link>
                         <Link to={'/about'} className="nav-link">About</Link>
                     </div>
-                    <h2>התרגיל של הגר</h2>
                     <hr />
                     <Switch>
                         <Route exact path='/' render={(routeProps) => (

@@ -2,6 +2,10 @@ import React from 'react'
 import { connect } from "react-redux";
 import {setBoard} from "../../../store/actions";
 import _ from "lodash"
+import GameForm from "./gameForm"
+import Board from "./board"
+
+
 const mapStateToProps = state => {
     return {
       board: state.board,
@@ -14,30 +18,73 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class ConnectedHome extends React.Component {
-    constructor(props) {
+class connectedGame extends React.Component {
+  currSelectedGroup=[]
+
+  constructor(props) {
         super(props);
         this.state = {
           markedGroups:[],
-          currSelectedLength:0,
-          imgSrc:[
-            'https://cdn1.iconfinder.com/data/icons/angry-icons-by-femfoyou/512/whitebird.png',
-            'http://icons.iconarchive.com/icons/femfoyou/angry-birds/256/angry-bird-blue-icon.png',
-            'http://icons.iconarchive.com/icons/femfoyou/angry-birds/128/angry-bird-yellow-icon.png',
-            'https://i0.wp.com/gallery.yopriceville.com/var/albums/Free-Clipart-Pictures/Cartoons-PNG/Red%20Bird%20The%20Angry%20Birds%20Movie%20PNG%20Transparent%20Image.png?m=1462570648',
-            'http://icons.iconarchive.com/icons/martin-berube/flat-animal/128/horse-icon.png',
-            'http://icons.iconarchive.com/icons/iconka/tailwaggers/128/dog-pug-icon.png',
-            'http://icons.iconarchive.com/icons/iconka/tailwaggers/128/dog-rich-icon.png',
-            'http://icons.iconarchive.com/icons/iconka/tailwaggers/128/dog-shepherd-icon.png',
-            'http://icons.iconarchive.com/icons/arrioch/birdie-adium/128/Adium-Bird-Awake-icon.png',
-            'http://icons.iconarchive.com/icons/martin-berube/flat-animal/128/frog-icon.png',
-          ],
-           xLen:9,
-            yLen:9,
-            maxNum:4,
+          currSelectedGroups:[],
+          currSelectedGroup:[],
+          xLen:3,
+          yLen:3,
+          maxNum:3,
+          totalWrong:0,
+          totalRight:0,
 
         };
     }
+  handleAnswer=(userInput)=>{
+    let newBoard = _.cloneDeep(this.props.board);
+
+    let correctRes = this.state.currSelectedGroups.reduce((acc,curr)=>{
+      return acc+curr.length
+    },this.state.totalRight);
+    let obj={
+      isSelected:false,
+      answerStatus:'status-wrong'
+    };
+    if(correctRes === +userInput){
+      obj.answerStatus = 'status-right'
+      this.setState({
+        totalRight: correctRes,
+      });
+    }else{
+      this.setState({
+        totalWrong: this.state.totalWrong + correctRes,
+      });
+    }
+    this.state.currSelectedGroups.forEach((row,idx)=>{
+      row.forEach((sq,indx)=> {
+        newBoard[sq.x][sq.y] = {...sq,...obj}
+      })
+    });
+    this.props.setBoard({newBoard});
+    this.setState({
+      currSelectedGroups: [],
+    });
+
+
+
+  };
+  componentDidUpdate(){
+    if(this.state.totalWrong + this.state.totalRight === this.state.xLen * this.state.yLen){
+      this.nextStage()
+    }
+  }
+  nextStage(){
+    this.setState({
+      yLen: this.state.yLen +1,
+      xLen: this.state.xLen +1,
+      maxNum: this.state.maxNum +1,
+      markedGroups:[],
+      currSelectedGroups:[],
+      currSelectedGroup:[],
+      totalWrong:0,
+      totalRight:0,
+    },()=>this.initBoard());
+  }
   clicked=(x,y)=> {
       this.markGroup(x,y)
   };
@@ -48,12 +95,12 @@ class ConnectedHome extends React.Component {
       return {
         srcIdx: this.getRandomArbitrary(),
         isSelected:false,
-        isInGame:true,
+        answerStatus:'status-init',//'init'/false/true
         isLonely:false,
       }
   }
-  async componentDidMount(){
-      let newBoard = [];
+  initBoard(){
+    let newBoard = [];
     for(let x = 0; x<this.state.xLen; x++){
       newBoard[x]=[];
       for(let y = 0;y<this.state.xLen; y++){
@@ -62,6 +109,9 @@ class ConnectedHome extends React.Component {
     }
     newBoard = this.markLonely(newBoard);
     this.props.setBoard({newBoard});
+  }
+  async componentDidMount(){
+   this.initBoard()
   }
   markLonely(newBoard){
     newBoard.forEach((row,x)=> {
@@ -80,13 +130,11 @@ class ConnectedHome extends React.Component {
   markNeighbours(x,y, board) {
     const square = board[x][y];
     if(square.isSelected)return;
-    board[x][y].isSelected = true;
-    this.setState({
-      currSelectedLength: this.state.currSelectedLength ++,
-    });
-
-    let arr = this.getNeighbours(x, y, board)
-    let filtered = this.filterSimilar(square.srcIdx,arr)
+    board[x][y].isSelected = this.state.currSelectedGroups.length + 1;
+    let item = board[x][y]
+    this.currSelectedGroup.push(item)
+    let arr = this.getNeighbours(x, y, board);
+    let filtered = this.filterSimilar(square.srcIdx,arr);
     filtered.forEach(sq=> {
         this.markNeighbours(sq.x, sq.y, board)
     })
@@ -94,15 +142,16 @@ class ConnectedHome extends React.Component {
   filterSimilar(srcIdx,arr){
     return arr.filter(item=> item.srcIdx === srcIdx)
   }
+
   markGroup(x,y){
-    let newBoard = _.cloneDeep(this.props.board)
+    let newBoard = _.cloneDeep(this.props.board);
+
     this.markNeighbours(x,y,newBoard)
     this.props.setBoard({newBoard});
-
     this.setState({
-      currSelectedLength: 0,
-      markedGroups:[...this.state.markedGroups,this.state.currSelectedLength]
+      currSelectedGroups: [...this.state.currSelectedGroups,this.currSelectedGroup ],
     });
+    this.currSelectedGroup = [];
   }
   getNeighbours(x,y, board = this.props.board){
     let neighbours = []
@@ -112,7 +161,6 @@ class ConnectedHome extends React.Component {
         if (tempY < 0 || tempY > this.state.xLen -1) continue;//not outside of board
         if (tempX < 0 || tempX > this.state.yLen -1) continue;//not outside of board
         let o = board[tempX][tempY];
-        if(!o) debugger
         let res = {
           ...this.initSquare(),
           y: tempY,
@@ -125,36 +173,22 @@ class ConnectedHome extends React.Component {
     return neighbours
   }
   render() {
+    const { currSelectedGroups, totalRight, totalWrong} = this.state;
     const { board } = this.props;
 
     return(
       <div className="game mt-5">
-        <div>my name: {this.props.userName}</div>
-         {board &&
-        <div className="board">
-          {board.map((y, yIdx) =>
-            <div className="row" key={yIdx}>
-              {y.map((x, xIdx) =>
-                <div key={xIdx}
-                     className={
-                       `square ${board[xIdx][yIdx].isSelected ? 'selected':''} ${board[xIdx][yIdx].isLonely ? 'lonely':''}`
-                     }
-                     onClick={() => {
-                       this.clicked(xIdx, yIdx)
-                     }}>
-                  {/*<div className={'position-absolute'}>{xIdx}{yIdx}/{board[xIdx][yIdx].srcIdx}</div>*/}
-                  <img src={this.state.imgSrc[board[xIdx][yIdx].srcIdx]} alt=""/>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      }
+         {board && <Board onClick={this.clicked} board={board}/>}
+        {board && <GameForm handleAnswer={this.handleAnswer}
+                            totalWrong={totalWrong}
+                            totalRight={totalRight}
+          currSelectedGroups={currSelectedGroups}
+        />}
       </div>
     )
 
   }
 }
-const Game = connect(mapStateToProps, mapDispatchToProps)(ConnectedHome);
+const Game = connect(mapStateToProps, mapDispatchToProps)(connectedGame);
 
 export default Game
