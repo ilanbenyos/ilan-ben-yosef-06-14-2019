@@ -43,18 +43,19 @@ class gameForm extends React.Component {
         :
         <div>no data</div>
       }
-          <form onSubmit={this.handleAnswer} className="d-flex flex-column justify-content-center">
+          <form onSubmit={this.handleAnswer} className="d-flex flex-column justify-content-center mx-4">
             <div className="form-group d-flex justify-content-center">
-              <label>
               <input
                 type="text"
                 className="form-control"
                 value={answer}
                 onChange={this.handleChange}
               />
-              </label>
-              <button type="submit" className="btn btn-success">
-                שלח!
+              {/*<div className="input-group-append" onClick={this.handleAnswer}>*/}
+                {/*<span className="input-group-text" id="basic-addon2">שלח!</span>*/}
+              {/*</div>*/}
+              <button type="submit" className="btn btn-success input-group-append">
+                <span className="input-group-text">שלח!</span>
               </button>
             </div>
 

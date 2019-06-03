@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux";
-import {setBoard} from "../../../store/actions";
+import {setBoard, addScore} from "../../../store/actions";
 import _ from "lodash"
 import GameForm from "./gameForm"
 import Board from "./board"
@@ -8,12 +8,14 @@ import Board from "./board"
 
 const mapStateToProps = state => {
     return {
+      score: state.score,
       board: state.board,
       userName: state.userName,
     };
 };
 function mapDispatchToProps(dispatch) {
   return {
+    addScore: scoreToAdd => dispatch(addScore(scoreToAdd)),
     setBoard: newBoard => dispatch(setBoard(newBoard)),
   };
 }
@@ -51,6 +53,7 @@ class connectedGame extends React.Component {
       this.setState({
         totalRight: correctRes,
       });
+      this.props.addScore(chosenSquares);
     }else{
       this.setState({
         totalWrong: this.state.totalWrong + chosenSquares,
@@ -70,6 +73,7 @@ class connectedGame extends React.Component {
   componentDidUpdate(){
     let totalSquares = this.state.xLen * this.state.yLen
     if(this.state.totalRight === totalSquares){
+      this.props.addScore(this.state.yLen);
       this.nextStage()
     }else if(this.state.totalWrong + this.state.totalRight === totalSquares){
       this.refreshStage()
@@ -193,6 +197,7 @@ class connectedGame extends React.Component {
 
     return(
       <div className="game mt-5">
+        <div className="score d-inline-block h3 p-2 rounded bg-warning">{this.props.score}</div>
          {board && <Board onClick={this.clicked} board={board}/>}
         {board && <GameForm handleAnswer={this.handleAnswer}
                             totalWrong={totalWrong}

@@ -40,10 +40,10 @@ class App extends Component {
                     </div>
                     <hr />
                     <Switch>
-                        <Route exact path='/' render={(routeProps) => (
+                        <Route exact path='/home' render={(routeProps) => (
                             <Home {...routeProps} foo="bar"/>
                         )}/>
-                        <Route exact path='/game' render={(routeProps) => (
+                        <Route exact path='/' render={(routeProps) => (
                             <Game {...routeProps}/>
                         )}/>
                         <Route

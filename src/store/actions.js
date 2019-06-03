@@ -2,6 +2,9 @@
 export function addArticle(payload) {
     return { type: 'ADD_ARTICLE', payload };
 }
+export function addScore(scoreToAdd) {
+    return { type: 'addScore', scoreToAdd };
+}
 export function setBoard({newBoard}) {
     return { type: 'setBoard', newBoard };
 }
