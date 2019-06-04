@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
 import { addArticle, setUserName } from "../store/actions";
+import AppInput from './appInput'
+import Contact from "./views/contact";
 
 function mapDispatchToProps(dispatch) {
     return {
@@ -12,11 +14,17 @@ function mapDispatchToProps(dispatch) {
 class ConnectedForm extends Component {
     constructor() {
         super();
-        this.state = {
+      this.textInput = React.createRef();
+
+      this.state = {
             title: "",
             userName:'',
+            txtVal:'',
         };
     }
+    updateTxtVal=(str)=> {
+      this.setState({ txtVal: str });
+    };
     handleChange=(event)=> {
         this.setState({ [event.target.id]: event.target.value });
     };
@@ -41,6 +49,7 @@ class ConnectedForm extends Component {
         const { title, userName } = this.state;
         return (
             <div className="forms">
+              =={this.state.txtVal}==========
                 <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="title">Title</label>
@@ -65,12 +74,16 @@ class ConnectedForm extends Component {
                         id="userName"
                         value={userName}
                         onChange={this.handleChange}
-                    />
+                        ref={this.textInput} />
                 </div>
+              <AppInput updateTxtVal={this.updateTxtVal}
+                        text={this.state.txtVal}>
+              </AppInput>
                 <button type="submit" className="btn btn-success btn-lg">
                     SAVE
                 </button>
             </form>
+              <button onClick={()=>this.textInput.current.focus()} className="mt-2 btn btn-success btn-lg">focus ref!</button>
             </div>
         );
     }

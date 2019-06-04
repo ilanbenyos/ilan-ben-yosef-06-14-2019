@@ -26,15 +26,14 @@ class App extends Component {
         return (
             <Router>
                 <div className="container">
-                  <h2>התרגיל של הגר</h2>
-
+                  <h2>התרגיל של הגר </h2>
                   <div className="navbar-nav mr-auto d-flex flex-row">
-                        <Link to={'/'}className="nav-link mr-2"> Home </Link>
+                        <Link to={'/'}className="nav-link mr-2">Home</Link>
                         <Link to={
                             { pathname: `/contact/${ this.state.pop}`,
                                 search: '?foo=' + this.state.txt2
                             }
-                        }className="nav-link mr-2">Contact</Link>
+                        } className="nav-link mr-2">Contact</Link>
                         <Link to={'/game'} className="nav-link mr-2">Game</Link>
                         <Link to={'/about'} className="nav-link">About</Link>
                     </div>
@@ -43,11 +42,11 @@ class App extends Component {
                         <Route exact path='/' render={(routeProps) => (
                             <Home {...routeProps} foo="bar"/>
                         )}/>
-                        <Route exact path='/game' render={(routeProps) => (
+                        <Route exact path={`/game`} render={(routeProps) => (
                             <Game {...routeProps}/>
                         )}/>
                         <Route
-                            path="/contact/:txt2"
+                          path={`/contact/:txt2`}
                             render={(routeProps) => (
                                 <Contact {...routeProps}
                                          foo="bar"
@@ -55,7 +54,7 @@ class App extends Component {
                                          text={this.state.childText}/>
                             )}
                         />
-                        <Route path='/about' component={About} />
+                        <Route path={`/about`} component={About} />
                     </Switch>
                 </div>
             </Router>
