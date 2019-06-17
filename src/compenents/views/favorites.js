@@ -24,7 +24,7 @@ class ConnectedFavorites extends React.Component {
     async componentDidMount() {
       await this.props.initFavorites();
       const APPID ='e4063054bda92f3ca54619eb59a22adf';
-      const basePath = 'http://api.openweathermap.org/data/2.5/weather';
+      const basePath = 'https://api.openweathermap.org/data/2.5/weather';
 
       let multiP = this.props.favorites.map(async i=> {
         const str = `${basePath}?id=${i.id}&APPID=${APPID}`;

@@ -57,7 +57,7 @@ class ConnectedHome extends React.Component {
   };
   async pushSearch(str){
     const APPID ='e4063054bda92f3ca54619eb59a22adf';
-    const basePath = 'http://api.openweathermap.org/data/2.5/forecast';
+    const basePath = 'https://api.openweathermap.org/data/2.5/forecast';
     const apiPath = `${basePath}${str}&APPID=${APPID}`;
     let res  = await axios.get(apiPath);
     this.setState({ searchRes:res.data });
