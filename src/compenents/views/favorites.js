@@ -22,7 +22,7 @@ class ConnectedFavorites extends React.Component {
         };
     }
     async componentDidMount() {
-      await this.props.initFavorites()
+      await this.props.initFavorites();
       const APPID ='e4063054bda92f3ca54619eb59a22adf';
       const basePath = 'http://api.openweathermap.org/data/2.5/weather';
 
@@ -58,15 +58,12 @@ class ConnectedFavorites extends React.Component {
       })
     }
     render() {
-
-
         return (
         <div>
           <h3 className="my-favorites text-primary mb-3">My Favorites</h3>
           <div className="list-group">
             {this.getItems()}
           </div>
-
         </div>
         );
     }

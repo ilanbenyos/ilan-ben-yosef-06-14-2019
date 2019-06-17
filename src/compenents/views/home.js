@@ -49,18 +49,34 @@ class ConnectedHome extends React.Component {
     this.submitSearch()
   }
   submitSearch= async ()=>{
-    //api call example: http://api.openweathermap.org/data/2.5/forecast?q=tel%20aviv&APPID=e4063054bda92f3ca54619eb59a22adf
-    const APPID ='e4063054bda92f3ca54619eb59a22adf';
     const q = this.state.search;
+    const str = `?q=${q}`;
+    this.pushSearch(str)
+
+
+  };
+  async pushSearch(str){
+    const APPID ='e4063054bda92f3ca54619eb59a22adf';
     const basePath = 'http://api.openweathermap.org/data/2.5/forecast';
-    const str = `${basePath}?q=${q}&APPID=${APPID}`;
-    let res  = await axios.get(str);
+    const apiPath = `${basePath}${str}&APPID=${APPID}`;
+    let res  = await axios.get(apiPath);
     this.setState({ searchRes:res.data });
     this.props.history.push({
       pathname: '/',
       search: `?city=${this.state.searchRes.city.name}`,
     })
+    this.setState({ search:this.state.searchRes.city.name });
 
+  }
+  submitSearchLocation= async ()=>{
+    navigator.geolocation.getCurrentPosition(
+      async(position)=>{
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const str = `?lat=${lat}&lon=${lon}`;
+       this.pushSearch(str)
+      }
+    );
   };
     handleChange=(e)=> {
       this.setState({ search: e.target.value });
@@ -75,9 +91,16 @@ class ConnectedHome extends React.Component {
                       value={this.state.search}
                       onChange={this.handleChange}
                     />
-                  <button className="btn btn-success mt-2" onClick={this.submitSearch}>
-                    Search
-                  </button>
+                  <div className="panel mt-2  d-flex ">
+                    <button className="btn btn-success mr-2" onClick={this.submitSearch}>
+                      Search
+                    </button>
+                    <button className="btn btn-primary d-flex align-center" onClick={this.submitSearchLocation}>
+                      Search By Location
+                      <i className="material-icons text-danger ml-3"> location_on </i>
+
+                    </button>
+                  </div>
                   <div className="result" >
                     <CityRes searchRes={this.state.searchRes}
                              removeFromFavorites={this.removeFromFavorites}
@@ -87,7 +110,6 @@ class ConnectedHome extends React.Component {
                 </div>
             </div>
         )
-
     }
 }
 const Home = connect(mapStateToProps,mapDispatchToProps)(ConnectedHome);
