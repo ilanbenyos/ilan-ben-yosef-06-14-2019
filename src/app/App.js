@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
 import Home from '../compenents/views/home';
 import About from '../compenents/views/about';
 import Favorites from '../compenents/views/favorites';
@@ -10,17 +11,8 @@ class App extends Component {
         super(props);
 
         this.state = {
-            txt2: 'txt2',
-            pop:'popo',
-            txt: 'init',
-            childText2: 'rrr',
-            childText: 'init',
-            user:null,
         };
     }
-    handleChildClick = () => {
-        this.setState(state => ({ childText: state.childText === 'init'? 'no!!!':'init' }));
-    };
     render() {
         return (
             <Router>
@@ -30,9 +22,7 @@ class App extends Component {
                         <Link to={'/'} className="nav-link mr-2">Home</Link>
 
                         <Link to={
-                            { pathname: `/favorites/${ this.state.pop}`,
-                                search: '?foo=' + this.state.txt2
-                            }
+                            { pathname: `/favorites`}
                         } className="nav-link mr-2">Favorites</Link>
 
                         <Link to={'/about'} className="nav-link">About</Link>
@@ -40,17 +30,10 @@ class App extends Component {
                     <hr />
                     <Switch>
                         <Route exact path='/' render={(routeProps) => (
-                            <Home {...routeProps} foo="bar"/>
+                            <Home {...routeProps}/>
                         )}/>
                         <Route
-                          path={`/contact/:txt2`}
-                            render={(routeProps) => (
-                                <Favorites {...routeProps}
-                                           foo="bar"
-                                           onClick={this.handleChildClick}
-                                           text={this.state.childText}/>
-                            )}
-                        />
+                          path={`/favorites/`} component={Favorites} />
                         <Route path={`/about`} component={About} />
                     </Switch>
                 </div>

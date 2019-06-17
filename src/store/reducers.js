@@ -6,16 +6,11 @@ const initialState = {
   score:0,
 };
 function rootReducer(state = initialState, action) {
-  if (action.type === 'setFavorites') {
-    console.log('5555555555555');
-    return {...state, favorites: action.payload}
-  }
-  if (action.type === 'SET_FAVORITES') {
-    console.log('111111111111');
+  if (action.type === 'INIT_FAVORITES') {
     return {...state, favorites: action.payload}
   }
   if (action.type === 'SAVE_FAVORITES') {
-    console.log('222222222222');
+    localStorage.setItem('favorites', JSON.stringify(action.payload));
     return {...state, favorites: action.payload}
   }
     return state;

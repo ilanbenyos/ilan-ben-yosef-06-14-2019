@@ -1,50 +1,77 @@
 import React from 'react'
-import queryString from 'query-string';
+import { connect } from "react-redux";
+import axios from "axios";
+import {initFavorites} from "../../store/actions";
 
-class Favorites extends React.Component {
+
+const mapStateToProps = state => {
+  return { favorites: state.favorites };
+};
+function mapDispatchToProps(dispatch) {
+  return {
+    initFavorites: () => dispatch(initFavorites()),
+  };
+}
+
+class ConnectedFavorites extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            pushToStr:'kkk',
-            searchParams: queryString.parse(this.props.location.search),
-            isShow: true,
-            user:{
-                name:'ilan',
-                gender:'male'
-            }
+          favoritesObj: null,
         };
     }
+    async componentDidMount() {
+      await this.props.initFavorites()
+      const APPID ='e4063054bda92f3ca54619eb59a22adf';
+      const basePath = 'http://api.openweathermap.org/data/2.5/weather';
 
-    toggleShow = () => {
-        this.setState(state => ({ isShow: !state.isShow }));
-    };
-    toggleGender = () => {
-        this.setState(state => state.user.name = state.user.name === 'ilan' ? 'noam':'ilan');
-        this.setState(state => state.user.gender = state.user.gender === 'male' ? 'female':'male');
-    };
+      let multiP = this.props.favorites.map(async i=> {
+        const str = `${basePath}?id=${i.id}&APPID=${APPID}`;
+        return  axios.get(str);
+      });
+      let res = await Promise.all(multiP);
+      const favoritesObj = res.map(i=> i.data)
+      this.setState({ favoritesObj });
 
+    }
+    pushToCity(name){
+      this.props.history.push({
+        pathname: '/',
+        search: `?city=${name}`,
+      })
+    }
+    getItems(){
+      const favoritesObj = this.state.favoritesObj;
+      if(!favoritesObj)return [];
+      return favoritesObj.map((item,idx) => {
+        return (
+          <div key={idx}
+               className="list-group-item list-group-item-action rol-btn"
+               onClick={()=>this.pushToCity(item.name)}>
+            <h5 className="name mr-2 text-center text-success">{item.name}</h5>
+            <div className="bottom d-flex justify-content-between align-center">
+              <div className="temp">{Math.floor(item.main.temp - 273)} C</div>
+              <div className="description mr-2">{item.weather[0].description}</div>
+            </div>
+          </div>);
+      })
+    }
     render() {
+
+
         return (
         <div>
-            <button onClick={this.toggleShow} type="button">
-                Toggle Show
-            </button>
-            <button onClick={this.toggleGender} type="button">
-                Toggle Gender
-            </button>
-            {/*<button onClick={this.pushMe}>={this.props.match.params.txt2}+++</button>;*/}
-            <button onClick={this.props.onClick}>{this.props.text}</button>;
-            {this.props.foo}
-            <div>name={this.state.user.name}=</div>
-            <div>gender={this.state.user.gender}=</div>
-            <div>txt2={this.props.match.params.txt2}=</div>
-            <div>searchParams={queryString.parse(this.props.location.search).foo}=</div>
-            {this.state.isShow ?  <h3 >show</h3> : <h3 >no show</h3>}
+          <h3 className="my-favorites text-primary mb-3">My Favorites</h3>
+          <div className="list-group">
+            {this.getItems()}
+          </div>
+
         </div>
-
-
         );
     }
 }
+
+const Favorites = connect(mapStateToProps, mapDispatchToProps)(ConnectedFavorites);
+
 export default Favorites
