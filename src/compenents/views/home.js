@@ -25,6 +25,12 @@ class ConnectedHome extends React.Component {
           searchRes:null,
         };
     }
+    isValid(){
+      const regExpression = /^[a-zA-Z\s]*$/;
+      let res = regExpression.test(this.state.search)
+      console.log(res);
+      return res
+    }
   removeFromFavorites=(id)=> {
     this.props.removeFromFavorites(id);
     this.setState({
@@ -87,10 +93,15 @@ class ConnectedHome extends React.Component {
                 <div className="col-12 col-md-6 col-lg-4">
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${this.isValid()?'':'is-invalid'}`}
                       value={this.state.search}
                       onChange={this.handleChange}
                     />
+                  <div className="invalid-wrapper">
+                      <div className={`invalid-feedback ${this.isValid()?'':'d-block'}`} >
+                        English letters only
+                      </div>
+                  </div>
                   <div className="panel mt-2  d-flex ">
                     <button className="btn btn-success mr-2" onClick={this.submitSearch}>
                       Search
