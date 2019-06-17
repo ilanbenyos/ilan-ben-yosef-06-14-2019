@@ -1,23 +1,22 @@
 const initialState = {
-    articles: [],
-    userName:'',
-    board:null,
-    score:0,
+  favorites: [],
+  articles: [],
+  userName:'',
+  board:null,
+  score:0,
 };
 function rootReducer(state = initialState, action) {
-    if (action.type === 'ADD_ARTICLE') {
-        return Object.assign({}, state, {
-            articles: state.articles.concat(action.payload)
-        })
-    }
-    if (action.type === 'setUserName') {
-        return {...state, userName:action.payload}
-    }
-    if (action.type === 'addScore') {
-      return {...state,score:state.score + action.scoreToAdd}
-    }
-  if (action.type === 'setBoard') {
-    return {...state, board:action.newBoard}
+  if (action.type === 'setFavorites') {
+    console.log('5555555555555');
+    return {...state, favorites: action.payload}
+  }
+  if (action.type === 'SET_FAVORITES') {
+    console.log('111111111111');
+    return {...state, favorites: action.payload}
+  }
+  if (action.type === 'SAVE_FAVORITES') {
+    console.log('222222222222');
+    return {...state, favorites: action.payload}
   }
     return state;
 }

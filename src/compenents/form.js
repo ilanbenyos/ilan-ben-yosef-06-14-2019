@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import uuidv1 from "uuid";
 import { addArticle, setUserName } from "../store/actions";
 import AppInput from './appInput'
-import Contact from "./views/contact";
+import Favorites from "./views/favorites";
 
 function mapDispatchToProps(dispatch) {
     return {

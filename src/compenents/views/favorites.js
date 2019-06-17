@@ -1,7 +1,7 @@
 import React from 'react'
 import queryString from 'query-string';
 
-class Contact extends React.Component {
+class Favorites extends React.Component {
     constructor(props) {
         super(props);
 
@@ -16,12 +16,6 @@ class Contact extends React.Component {
         };
     }
 
-    // pushMe = () => {
-    //     this.props.match.params.txt2 === 'kkk' ?'lll' :'kkk' ;
-    //     this.props.history.push({ pathname: `/contact/${ this.state.pushToStr}`,
-    //         search: '?foo=' + this.state.user.name
-    //     })
-    // };
     toggleShow = () => {
         this.setState(state => ({ isShow: !state.isShow }));
     };
@@ -53,4 +47,4 @@ class Contact extends React.Component {
         );
     }
 }
-export default Contact
+export default Favorites
