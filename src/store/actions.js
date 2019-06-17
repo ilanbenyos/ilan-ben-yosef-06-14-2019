@@ -1,6 +1,5 @@
 
 export function initFavorites(payload) {
-  debugger
     return { type: 'initFavorites', payload };
 }
 

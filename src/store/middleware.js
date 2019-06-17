@@ -1,16 +1,13 @@
 
-export function initFavorites({ dispatch }) {
-  return function(next) {
-    return function(action) {
-      if (action.type === 'initFavorites') {
-        let favorites = localStorage.getItem('favorites')
-        favorites = favorites ? JSON.parse(favorites) : [];
-        debugger
-        return dispatch({type: "setFavorites", payload: favorites});
-      }
-    };
-  };
+export const initFavorites = ({ dispatch }) => next => action => {
+  if(action.type === 'initFavorites') {
+    let favorites = localStorage.getItem('favorites')
+    favorites = favorites ? JSON.parse(favorites) : [];
+    return dispatch({type: "setFavorites", payload: favorites});
+  }
+  next(action);
 }
+
 export function saveFavorite({ dispatch }) {
     return function(next) {
         return function(action) {
