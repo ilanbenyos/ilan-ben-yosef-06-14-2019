@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/ilan-ben-yosef-06-14-2019/precache-manifest.3c212d80ed0c333ee09bbd8c25a628a9.js"
+  "/ilan-ben-yosef-06-14-2019/precache-manifest.9456b2508b5980658931d35e60ce74ce.js"
 );
 
 self.addEventListener('message', (event) => {
