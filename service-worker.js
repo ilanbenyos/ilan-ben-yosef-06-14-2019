@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/ilanbenyos/ilan-ben-yosef-06-14-2019.git/precache-manifest.83f7d54057f20d44c13daaef4dca6f9a.js"
+  "/ilan-ben-yosef-06-14-2019.git/precache-manifest.1167c0fdebcfd95c28413a46e02e2c9e.js"
 );
 
 self.addEventListener('message', (event) => {
@@ -33,7 +33,7 @@ workbox.core.clientsClaim();
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("/ilanbenyos/ilan-ben-yosef-06-14-2019.git/index.html"), {
+workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("/ilan-ben-yosef-06-14-2019.git/index.html"), {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
