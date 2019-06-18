@@ -1,5 +1,11 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## working app at surge.sh
+https://herolo-test.surge.sh/?city=Tel%20Aviv
+
+## github pages
+https://ilanbenyos.github.io/favorites
+
 ## Available Scripts
 
 In the project directory, you can run:
